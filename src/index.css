@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container {
+  margin: 0 auto;
+  width: 90%;
+}
+/* CSS Button "Log in - Log out"*/
+.theme {
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 5px;
+  font-size: 0.8em;
+}
+
+.theme:before {
+  content: "";
+  background: linear-gradient(
+    50deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 5px;
+}
+
+.theme:active {
+  color: #000;
+}
+
+.theme:active:after {
+  background: transparent;
+}
+
+.theme:hover:before {
+  opacity: 1;
+}
+
+.theme:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #151515;
+  left: 0;
+  top: 0;
+  border-radius: 5px;
+}
+
+@keyframes glowing {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/*End CSS Button "Log in - Log out"*/
+:root {
+  --glow-color: hsl(186, 7%, 73%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+.glowing-btn {
+  position: relative;
+  cursor: pointer;
+  padding: 0.35em 1em;
+  background: none;
+  perspective: 2em;
+  font-size: 0.75em;
+}
+
+.glowing-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.7;
+  transform: translateY(120%) rotateX(95deg) scale(1, 0.35);
+  pointer-events: none;
+}
+
+.glowing-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  z-index: -1;
+  background-color: var(--glow-color);
+  transition: opacity 100ms linear;
+}
+
+.glowing-btn:hover:before {
+  filter: blur(2em);
+  opacity: 1;
+  background: var(--glow-color);
+}
+:where(.css-dev-only-do-not-override-1g853jt).ant-card .ant-card-body {
+  padding: 0;
+  border-radius: 0 0 8px 8px;
+}
+.slick-next,
+.slick-prev {
+  right: 0 !important;
+}
