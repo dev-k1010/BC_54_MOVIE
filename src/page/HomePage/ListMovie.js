@@ -34,6 +34,7 @@ export default function ListMovie() {
       setNav2(slider2.current);
     }
   }, [slider1.current, slider2.current]);
+  console.log("🙂 ~ ListMovie ~ movieArr:", movieArr)
 
   // Button "Prev - Next"
   const SampleArrow = ({ className, style, onClick, content, position }) => (
