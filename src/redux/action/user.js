@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { SET_INFO } from "../constant/user";
+import { SET_INFO, SET_LOGIN_STATUS } from "../constant/user";
 import { https } from "../../service/config";
 import { TURN_OFF, TURN_ON } from "../constant/spinner";
 
@@ -21,9 +21,15 @@ export let loginAction = (values, navigate) => {
           payload: res.data.content,
         });
         dispatch({
+          type: SET_LOGIN_STATUS,
+          payload: true, // Cập nhật trạng thái đăng nhập thành true
+        });
+        dispatch({
           type: TURN_OFF,
         });
-        navigate("/");
+
+        // Chuyển về trang trước đó
+        navigate(-1);
       })
       .catch((err) => {
         message.error("Login thất bại");

@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 export default function HomePlayout() {
   return (
-    <div>
+    <div >
       <Header />
       <Outlet />
     </div>

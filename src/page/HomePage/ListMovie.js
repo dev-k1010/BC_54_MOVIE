@@ -3,40 +3,39 @@ import { Card, Spin } from "antd";
 import { https } from "../../service/config";
 import { NavLink } from "react-router-dom";
 import Slider from "react-slick";
+import { useDispatch } from "react-redux";
+import { TURN_ON, TURN_OFF } from "../../redux/constant/spinner";
 
 const { Meta } = Card;
 
 export default function ListMovie() {
+  const dispatch = useDispatch();
   const [movieArr, setMovieArr] = useState([]);
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const slider1 = useRef(null);
   const slider2 = useRef(null);
   useEffect(() => {
-    // Fetch data
-    const fetchData = async () => {
-      try {
-        const res = await https.get(
-          "/api/QuanLyPhim/LayDanhSachPhim?maNhom=GP09"
-        );
+    dispatch({
+      type: TURN_ON,
+    });
+    https("/api/QuanLyPhim/LayDanhSachPhim?maNhom=GP09")
+      .then((res) => {
         setMovieArr(res.data.content);
-      } catch (err) {
+        dispatch({
+          type: TURN_OFF,
+        });
+      })
+      .catch((err) => {
         console.log("🙂 ~ useEffect ~ err:", err);
-      }
-    };
+      });
 
-    // Call fetchData
-    fetchData();
-
-    // Set up slider
     if (slider1.current && slider2.current) {
       setNav1(slider1.current);
       setNav2(slider2.current);
     }
   }, [slider1.current, slider2.current]);
-  console.log("🙂 ~ ListMovie ~ movieArr:", movieArr)
 
-  // Button "Prev - Next"
   const SampleArrow = ({ className, style, onClick, content, position }) => (
     <div
       className={className}
@@ -46,12 +45,12 @@ export default function ListMovie() {
         background: "black",
         content: content,
         [position]: 0,
-        // Lỗi Item card nằm trên ở Button Left Button Right thì không
         zIndex: position === "left" ? 1 : undefined,
       }}
       onClick={onClick}
     />
   );
+  
   const settings = {
     asNavFor: nav1,
     ref: slider2,
@@ -73,6 +72,9 @@ export default function ListMovie() {
       alt={alt}
     />
   );
+
+
+  
   const renderNavLink = (to, text) => (
     <NavLink
       to={to}
@@ -82,7 +84,7 @@ export default function ListMovie() {
     </NavLink>
   );
 
-  // Reder Card
+  //  ? isMovieCard = true => render nav1 : render nav2
   const renderCard = (movie, isMovieCard = false) => (
     <div key={movie.maPhim} className="flex md:hidden py-4">
       <Card
@@ -94,25 +96,20 @@ export default function ListMovie() {
         }`}
       >
         {isMovieCard ? (
-          // List "Card"
           <div className="py-3">
             <div className="mb-2 flex items-center justify-center h-[40vh]">
               <MovieImage src={movie.hinhAnh} alt="" />
             </div>
             <div className="space-y-4 text-center mx-auto">
               <Meta className="whitespace-normal" title={movie.tenPhim} />
-              {renderNavLink(`/detail/${movie.maPhim}`, "Mua vé")}
+              {renderNavLink(`/detail/${movie.maPhim}`, "Xem chi tiết")}
             </div>
           </div>
         ) : (
-          // Detail "Item card"
           <div className="flex space-x-5 p-2">
             <MovieImage src={movie.hinhAnh} alt="" />
-            <div className="space-y-4">
-              <div className="text-lg overflow-x-auto max-h-[300px]">
-                <span>{movie.moTa}</span>
-              </div>
-              {renderNavLink(`/detail/${movie.maPhim}`, "Xem chi tiết")}
+            <div className="text-lg overflow-x-auto max-h-[300px]">
+              <span>{movie.moTa}</span>
             </div>
           </div>
         )}
@@ -122,9 +119,12 @@ export default function ListMovie() {
 
   return (
     <div>
+      {/* nav1 */}
       <Slider className="bg-black w-full md:w-auto " {...settings}>
         {movieArr.map((movie) => renderCard(movie, true))}
       </Slider>
+
+      {/* nav2 */}
       <Slider
         className="mx-0 lg:mx-80"
         asNavFor={nav2}

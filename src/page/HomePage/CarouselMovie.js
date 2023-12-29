@@ -19,7 +19,6 @@ export default function CarouselMovie() {
     https
       .get("/api/QuanLyPhim/LayDanhSachBanner")
       .then((res) => {
-        console.log("carousel", res.data.content);
         setcarouselMovie(res.data.content);
       })
       .catch((err) => {
@@ -29,11 +28,9 @@ export default function CarouselMovie() {
 
   const renderImg = () => {
     return carouselMovie.map((item, index) => (
-      <div
-        key={index}
-      >
+      <div key={index}>
         <div
-          className="w-full h-[50vw] md:h-[60vw] lg:h-[90vh] "
+          className="w-full h-[50vw] md:h-[60vw] lg:h-[80vh] "
           style={{
             ...contentStyle,
             backgroundImage: `url(${item.hinhAnh})`,
@@ -44,8 +41,10 @@ export default function CarouselMovie() {
   };
 
   return (
-    <div className="mb-10">
-      <Carousel autoplay>{renderImg()}</Carousel>
+    <div className="relative mt-20 mb-10 z-0">
+      <Carousel className="" autoplay>
+        {renderImg()}
+      </Carousel>
     </div>
   );
 }
