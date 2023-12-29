@@ -86,9 +86,9 @@ const HomeTool = () => {
             width: 120,
           }}
           value={selectedDate}
-          // options={selectedDate.lichChieuPhim.map((lichChieu) => ({
-          //   // label: lichChieu.ngayChieuGioChieu,
-          //   // value: lichChieu.maLichChieu,
+          // options={selectedDate.map((lichChieu) => ({
+          //   label: lichChieu,
+          //   value: lichChieu,
           // }))}
         />
       )}
